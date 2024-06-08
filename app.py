@@ -262,7 +262,18 @@ For this, tou need to generate json like chart configuration.
 Please see several examples of chart configurations and generate a new chart configuration based text description.
 Please select the best chart type and provide corract chat configuration.
 Please do not include the text description. Only include the chart configuration in json format.
-Only chart types in the examples are allowed.
+Chart type should be one of the following:
+[
+  'pie',
+  'doughnut',
+  'polarArea',
+  'outlabeledPie',
+  'outlabeledDoughnut',
+  'boxplot',
+  'horizontalBoxplot', 
+  'violin', 
+  'horizontalViolin'
+]
 ---
 CHART EXAMPLES:
 {chart_examples}
