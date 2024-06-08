@@ -12,7 +12,6 @@ import json
 import tempfile
 
 
-
 solarllm = ChatUpstage()
 
 qc = QuickChart()
@@ -255,7 +254,6 @@ chart_examples = """
 """
 
 
-
 def get_gc_config(text_description: str, chart_examples: str = chart_examples):
 
     prompt = ChatPromptTemplate.from_template(
@@ -274,7 +272,9 @@ Text Description:
     )
 
     chain = prompt | solarllm | StrOutputParser()
-    response = chain.invoke({"text_description": text_description, "chart_examples": chart_examples})
+    response = chain.invoke(
+        {"text_description": text_description, "chart_examples": chart_examples}
+    )
     return response
 
 
@@ -289,9 +289,7 @@ def get_html_from_image(image):
                 with open(file_path, "wb") as f:
                     f.write(uploaded_file.getvalue())
 
-                layzer = UpstageLayoutAnalysisLoader(
-                    file_path, use_ocr=True
-                )
+                layzer = UpstageLayoutAnalysisLoader(file_path, use_ocr=True)
                 # For improved memory efficiency, consider using the lazy_load method to load documents page by page.
                 docs = layzer.load()  # or layzer.lazy_load()
                 st.write(f"Loaded {len(docs)} pages from {uploaded_file.name}")
@@ -301,6 +299,7 @@ def get_html_from_image(image):
                     content += "\n\n" + str(doc)
 
     return content
+
 
 if __name__ == "__main__":
     chart_explanation = """Please show me a chart of the number of dogs and cats in January, February, March, April, and May.
@@ -315,16 +314,19 @@ Use more colors and show me something creative."""
     st.title("🌞 Solar Chart 📊")
     st.write("Please provide the chart explanation and I will generate the chart")
 
-    chart_explanation = st.text_area("Write your chart explanation here", chart_explanation, height=120)
+    chart_explanation = st.text_area(
+        "Write your chart explanation here", chart_explanation, height=120
+    )
 
     uploaded_file = st.file_uploader(
-        "Otional: Choose image that includes numbers or table", type=["png", "jpeg", "jpg"]
+        "Otional: Choose image that includes numbers or table",
+        type=["png", "jpeg", "jpg"],
     )
 
     if st.button("Show me the chart"):
         if uploaded_file and uploaded_file.name:
             chart_explanation += "\n\n" + get_html_from_image(uploaded_file)
-        
+
         with st.status("Generating the chart configuration ..."):
             for i in range(3):
                 try:
@@ -334,16 +336,22 @@ Use more colors and show me something creative."""
                 except Exception as e:
                     st.error(f"Error: {e}")
                     st.warning("Please try again!")
-        
+
         with st.status("Generating the chart ...", expanded=True):
             qc.config = json
             # You can get the chart URL...
             print(qc.get_url())
 
             # Get the image as a variable...
-            #image = qc.get_image()
+            # image = qc.get_image()
 
             # ...and display it
-            #st.image(image, caption="Generated Chart")
+            # st.image(image, caption="Generated Chart")
             st.image(qc.get_url(), caption="Generated Chart")
 
+    st.info(
+        """This is experimenal service. 
+        Please use it at your own risk. 
+        We are not responsible for any loss or damage caused by using this service. 
+        We do not store any data you provide."""
+    )
