@@ -362,8 +362,7 @@ Use more colors and show me something creative."""
             st.image(qc.get_url(), caption="Generated Chart")
 
     st.info(
-        """This is experimenal service. 
-        Please use it at your own risk. 
-        We are not responsible for any loss or damage caused by using this service. 
+        """Please use this experimental service at your own risk. 
+        We are not responsible for any loss or damage caused by using it. 
         We do not store any data you provide."""
     )
